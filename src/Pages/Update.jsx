@@ -1,236 +1,262 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
- import { ToastContainer, toast } from "react-toastify";
- import "react-toastify/dist/ReactToastify.css";
-
-
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Update = () => {
-  const {userId} = useParams();
-  console.log(userId)
+  const { userId } = useParams();
+  console.log(userId);
 
-    const [userFName, setUserFName] = useState("");
-    const [userLName, setUserLName] = useState("");
-    const [userEmail, setUserEmail] = useState("");
-    const [UserPassword, setUserPassword] = useState("");
-    const [userHeight, setUserHeight] = useState("");
-    const [userWeight, setUserWeight] = useState("");
-    const [userGender, setUserGender] = useState("");
-    const [userRole, setUserRole] = useState("");
-    const [userCourse, setUserCourses] = useState("");
-    const [courses, setCourses] = useState([]);
-  
-    const toastDealing = (message, type) => {
-      if (type === "danger") {
-        toast.error(message, {
-          position: "bottom-right",
-        });
-      } else {
-        toast.success(message, {
-          position: "bottom-right",
-        });
-      }
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      const newUser = {
-        fname: userFName,
-        lname: userLName,
-        email: userEmail,
-        password: UserPassword,
-        gender: userGender,
-        height: userHeight,
-        weight: userWeight,
-        course: userCourse,
-        role: userRole,
-      };
-  
-      try {
-        const response = await fetch(
-          `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newUser),
-          }
-        );
-        if (response.ok) {
-          toastDealing("User registered successfully!", "success");
-        } else {
-          throw new Error("Failed to register user.");
-        }
-      } catch (error) {
-        toastDealing(error.message, "danger");
-      }
-    };
-const fetchSingleuser = async()=> {
-  try {
-    const response = await fetch(`https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`);
-    if (response.ok) {
-      const singledata = await response.json();
-      setsingleuser(singledata);
+  const [userFName, setUserFName] = useState("");
+  const [userLName, setUserLName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [userHeight, setUserHeight] = useState("");
+  const [userWeight, setUserWeight] = useState("");
+  const [userGender, setUserGender] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const [userCourse, setUserCourses] = useState("");
+  const [courses, setCourses] = useState([]);
+
+  const toastDealing = (message, type) => {
+    if (type === "danger") {
+      toast.error(message, {
+        position: "bottom-right",
+      });
     } else {
-      throw new Error("Failed to fetch User.");
+      toast.success(message, {
+        position: "bottom-right",
+      });
     }
-  } catch (error) {
-    toastDealing(error.message, "danger");
-  }
-}
-    
-  
-    const fetchCourses = async () => {
-      try {
-        const response = await fetch("https://66d806e137b1cadd8053106b.mockapi.io/Courses");
-        if (response.ok) {
-          const data = await response.json();
-          setCourses(data);
-        } else {
-          throw new Error("Failed to fetch courses.");
-        }
-      } catch (error) {
-        toastDealing(error.message, "danger");
-      }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const updatedUser = {
+      fname: userFName,
+      lname: userLName,
+      email: userEmail,
+      password: userPassword,
+      gender: userGender,
+      height: userHeight,
+      weight: userWeight,
+      course: userCourse,
+      role: userRole,
     };
-  
-    useEffect(() => {
-      fetchCourses();
-      fetchSingleuser();
-    }, []); 
-  
 
+    try {
+      const response = await fetch(
+        `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`,
+        {
+          method: "PUT", // Use PUT for updating the user
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedUser),
+        }
+      );
+      if (response.ok) {
+        toastDealing("User updated successfully!", "success");
+      } else {
+        throw new Error("Failed to update user.");
+      }
+    } catch (error) {
+      toastDealing(error.message, "danger");
+    }
+  };
 
+  const fetchSingleuser = async () => {
+    try {
+      const response = await fetch(
+        `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`
+      );
+      if (response.ok) {
+        const singledata = await response.json();
+        setUserFName(singledata.fname);
+        setUserLName(singledata.lname);
+        setUserEmail(singledata.email);
+        setUserPassword(singledata.password);
+        setUserGender(singledata.gender);
+        setUserHeight(singledata.height);
+        setUserWeight(singledata.weight);
+        setUserCourses(singledata.course);
+        setUserRole(singledata.role);
+      } else {
+        throw new Error("Failed to fetch User.");
+      }
+    } catch (error) {
+      toastDealing(error.message, "danger");
+    }
+  };
 
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch(
+        "https://66d806e137b1cadd8053106b.mockapi.io/Courses"
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setCourses(data);
+      } else {
+        throw new Error("Failed to fetch courses.");
+      }
+    } catch (error) {
+      toastDealing(error.message, "danger");
+    }
+  };
 
-  return (<>
-    <div className="container mt-5">
-      <h2 className=" text-start">Update Form</h2>
-      <form  onSubmit={handleSubmit}>
-        <div class="mb-3 mt-5 row">
-          <div className="col">
-            <label for="exampleInputPassword1" className="form-label">
-              First Name
+  useEffect(() => {
+    fetchCourses();
+    fetchSingleuser();
+  }, []);
+
+  return (
+    <>
+      <div className="container mt-5">
+        <h2 className="text-start">Update Form</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3 mt-5 row">
+            <div className="col">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                First Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="exampleInputPassword1"
+                placeholder="SomeOne"
+                value={userFName}
+                onChange={(e) => setUserFName(e.target.value)}
+              />
+            </div>
+            <div className="col">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Last Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="exampleInputPassword1"
+                placeholder="Also SomeOne"
+                value={userLName}
+                onChange={(e) => setUserLName(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="exampleInputEmail1" className="form-label">
+              Email address
             </label>
             <input
-              type="text"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="SomeOne"
-              value={}
-              onChange={(e) => setUserFName(e.target.value)}
+              type="email"
+              className="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              placeholder="someone@something.whatever"
+              value={userEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
+            <div id="emailHelp" className="form-text">
+              We'll never share your email with anyone else.
+            </div>
           </div>
-          <div className="col">
-            <label for="exampleInputPassword1" className="form-label">
-              Last Name
+          <div className="mb-3">
+            <label htmlFor="exampleInputPassword1" className="form-label">
+              Password
             </label>
             <input
-              type="text"
-              class="form-control"
+              type="password"
+              className="form-control"
               id="exampleInputPassword1"
-              placeholder="Also SomeOne"
-              onChange={(e) => setUserLName(e.target.value)}
+              placeholder="********"
+              value={userPassword}
+              onChange={(e) => setUserPassword(e.target.value)}
             />
           </div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            class="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="someone@something.whatever"
-            onChange={(e) => setUserEmail(e.target.value)}
-          />
-          <div id="emailHelp" class="form-text">
-            We'll never share your email with anyone else.
+          <div className="mb-3 row">
+            <div className="col">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Height
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="exampleInputPassword1"
+                placeholder="155CM"
+                value={userHeight}
+                onChange={(e) => setUserHeight(e.target.value)}
+              />
+            </div>
+            <div className="col">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Weight
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="exampleInputPassword1"
+                placeholder="60Kg"
+                value={userWeight}
+                onChange={(e) => setUserWeight(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            class="form-control"
-            id="exampleInputPassword1"
-            placeholder="********"
-            onChange={(e) => setUserPassword(e.target.value)}
-          />
-        </div>
-        <div class="mb-3 row">
-          <div className="col">
-            <label for="exampleInputPassword1" className="form-label">
-              Height
+          <div className="mb-3 row">
+            <div className="col">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Gender
+              </label>
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                value={userGender}
+                onChange={(e) => setUserGender(e.target.value)}
+              >
+                <option value="">Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div className="col">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Role
+              </label>
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                value={userRole}
+                onChange={(e) => setUserRole(e.target.value)}
+              >
+                <option value="">Role</option>
+                <option value="admin">Admin</option>
+                <option value="student">Student</option>
+              </select>
+            </div>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="exampleInputPassword1" className="form-label">
+              Courses
             </label>
-            <input
-              type="number"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="155CM"
-              onChange={(e) => setUserHeight(e.target.value)}
-            />
-          </div>
-          <div className="col">
-            <label for="exampleInputPassword1" className="form-label">
-              Weight
-            </label>
-            <input
-              type="number"
-              class="form-control"
-              id="exampleInputPassword1"
-              placeholder="60Kg"
-              onChange={(e) => setUserWeight(e.target.value)}
-            />
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <div className="col">
-            <label for="exampleInputPassword1" className="form-label">
-              Gender
-            </label>
-            <select class="form-select" aria-label="Default select example"  onChange={(e) => setUserGender(e.target.value)}>
-              <option selected>Gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-          <div className="col">
-            <label for="exampleInputPassword1" className="form-label">
-              Role
-            </label>
-            <select class="form-select" aria-label="Default select example"  onChange={(e) => setUserRole(e.target.value)}>
-              <option selected>Role</option>
-              <option value="admin">Admin</option>
-              <option value="student">Student</option>
-            </select>
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputPassword1" className="form-label">
-            Courses
-          </label>
-          <select class="form-select" aria-label="Default select example" onChange={(e) => setUserCourses(e.target.value)}>
-            <option selected>Courses</option>
-            {courses.map((courses, index) => (
-                <option key={index} value={courses.C_name}>
-                  {courses.C_name}
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              value={userCourse}
+              onChange={(e) => setUserCourses(e.target.value)}
+            >
+              <option value="">Courses</option>
+              {courses.map((course, index) => (
+                <option key={index} value={course.C_name}>
+                  {course.C_name}
                 </option>
               ))}
-          </select>{" "}
-        </div>
+            </select>
+          </div>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    </div>
-    <ToastContainer />
+          <button type="submit" className="btn btn-primary">
+            Submit
+          </button>
+        </form>
+      </div>
+      <ToastContainer />
     </>
   );
 };
