@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 
 
 const Update = () => {
+  const {userId} = useParams();
+  console.log(userId)
 
     const [userFName, setUserFName] = useState("");
     const [userLName, setUserLName] = useState("");
@@ -48,7 +50,7 @@ const Update = () => {
   
       try {
         const response = await fetch(
-          `https://66d806e137b1cadd8053106b.mockapi.io/Users/${user}`,
+          `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
