@@ -68,12 +68,12 @@ const Update = () => {
     };
 const fetchSingleuser = async()=> {
   try {
-    const response = await fetch("https://66d806e137b1cadd8053106b.mockapi.io/Courses");
+    const response = await fetch(`https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`);
     if (response.ok) {
       const data = await response.json();
       setsingleuser(singledata);
     } else {
-      throw new Error("Failed to fetch user.");
+      throw new Error("Failed to fetch User.");
     }
   } catch (error) {
     toastDealing(error.message, "danger");
@@ -97,6 +97,7 @@ const fetchSingleuser = async()=> {
   
     useEffect(() => {
       fetchCourses();
+      fetchSingleuser();
     }, []); 
   
 
