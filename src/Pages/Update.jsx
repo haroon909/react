@@ -70,7 +70,7 @@ const fetchSingleuser = async()=> {
   try {
     const response = await fetch(`https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`);
     if (response.ok) {
-      const data = await response.json();
+      const singledata = await response.json();
       setsingleuser(singledata);
     } else {
       throw new Error("Failed to fetch User.");
@@ -118,6 +118,7 @@ const fetchSingleuser = async()=> {
               class="form-control"
               id="exampleInputPassword1"
               placeholder="SomeOne"
+              value={}
               onChange={(e) => setUserFName(e.target.value)}
             />
           </div>
