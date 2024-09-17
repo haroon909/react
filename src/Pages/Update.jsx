@@ -108,7 +108,7 @@ const Update = () => {
     <>
       <div className="container mt-5">
         <h2 className="text-start">Update Form</h2>
-        {userList.map((user) => (
+        {userSingle.map((user) => (
         <form onSubmit={handleSubmit}>
           <div className="mb-3 mt-5 row">
             <div className="col">
@@ -120,7 +120,7 @@ const Update = () => {
                 className="form-control"
                 id="exampleInputPassword1"
                 placeholder="SomeOne"
-                value={userFName}
+                value={user.fname}
                 onChange={(e) => setUserFName(e.target.value)}
               />
             </div>
