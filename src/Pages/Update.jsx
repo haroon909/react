@@ -43,11 +43,11 @@ const Update = () => {
       return;
     }
   
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(userEmail)) {
-      toastDealing("Please enter a valid email address", "danger");
+    if (!userEmail) {
+      toastDealing("Email is required", "danger");
       return;
     }
+    
   
     if (userPassword.length < 6) {
       toastDealing("Password must be at least 6 characters long", "danger");
