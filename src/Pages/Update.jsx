@@ -64,29 +64,24 @@ const Update = () => {
     }
   };
 
-  const fetchSingleuser = async () => {
-    try {
-      const response = await fetch(
-        `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`
-      );
-      if (response.ok) {
-        const singledata = await response.json();
-        setUserFName(singledata.fname);
-        setUserLName(singledata.lname);
-        setUserEmail(singledata.email);
-        setUserPassword(singledata.password);
-        setUserGender(singledata.gender);
-        setUserHeight(singledata.height);
-        setUserWeight(singledata.weight);
-        setUserCourses(singledata.course);
-        setUserRole(singledata.role);
-      } else {
-        throw new Error("Failed to fetch User.");
-      }
-    } catch (error) {
-      toastDealing(error.message, "danger");
-    }
-  };
+  
+    const [userList, setUserList] = useState([]);
+  
+    useEffect(() => {
+      const fetchUserList = async () => {
+        try {
+          const response = await fetch(
+            "https://66d806e137b1cadd8053106b.mockapi.io/Users"
+          );
+          if (!response.ok) {
+            throw new Error("Network response was not ok.");
+          }
+          const data = await response.json();
+          setUserList(data);
+        } catch (error) {
+          console.error("Error fetching user list:", error);
+        }
+      };})
 
   const fetchCourses = async () => {
     try {
