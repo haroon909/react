@@ -5,7 +5,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 const Update = () => {
   const { userId } = useParams();
-  console.log(userId);
 
   const [userFName, setUserFName] = useState("");
   const [userLName, setUserLName] = useState("");
@@ -64,25 +63,31 @@ const Update = () => {
     }
   };
 
-  const [userSingle, setUserSingle] = useState([]);
-
   useEffect(() => {
     const fetchUserSingle = async () => {
       try {
         const response = await fetch(
-          "https://66d806e137b1cadd8053106b.mockapi.io/Users"
+          `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok.");
         }
         const data = await response.json();
-        setUserSingle(data);
+        setUserFName(data.fname);
+        setUserLName(data.lname);
+        setUserEmail(data.email);
+        setUserPassword(data.password);
+        setUserHeight(data.height);
+        setUserWeight(data.weight);
+        setUserGender(data.gender);
+        setUserRole(data.role);
+        setUserCourses(data.course);
       } catch (error) {
         console.error("Error fetching user", error);
       }
     };
     fetchUserSingle();
-  });
+  }, [userId]); // <-- Add userId as a dependency
 
   const fetchCourses = async () => {
     try {
@@ -102,36 +107,35 @@ const Update = () => {
 
   useEffect(() => {
     fetchCourses();
-    }, []);
+  }, []);
 
   return (
     <>
       <div className="container mt-5">
         <h2 className="text-start">Update Form</h2>
-        {userSingle.map((user) => (
         <form onSubmit={handleSubmit}>
           <div className="mb-3 mt-5 row">
             <div className="col">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="firstName" className="form-label">
                 First Name
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="exampleInputPassword1"
+                id="firstName"
                 placeholder="SomeOne"
-                value={user.fname}
+                value={userFName}
                 onChange={(e) => setUserFName(e.target.value)}
               />
             </div>
             <div className="col">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="lastName" className="form-label">
                 Last Name
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="exampleInputPassword1"
+                id="lastName"
                 placeholder="Also SomeOne"
                 value={userLName}
                 onChange={(e) => setUserLName(e.target.value)}
@@ -139,13 +143,13 @@ const Update = () => {
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="exampleInputEmail1" className="form-label">
+            <label htmlFor="email" className="form-label">
               Email address
             </label>
             <input
               type="email"
               className="form-control"
-              id="exampleInputEmail1"
+              id="email"
               aria-describedby="emailHelp"
               placeholder="someone@something.whatever"
               value={userEmail}
@@ -156,13 +160,13 @@ const Update = () => {
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
+            <label htmlFor="password" className="form-label">
               Password
             </label>
             <input
-              type="password"
+              type="text"
               className="form-control"
-              id="exampleInputPassword1"
+              id="password"
               placeholder="********"
               value={userPassword}
               onChange={(e) => setUserPassword(e.target.value)}
@@ -170,26 +174,26 @@ const Update = () => {
           </div>
           <div className="mb-3 row">
             <div className="col">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="height" className="form-label">
                 Height
               </label>
               <input
                 type="number"
                 className="form-control"
-                id="exampleInputPassword1"
+                id="height"
                 placeholder="155CM"
                 value={userHeight}
                 onChange={(e) => setUserHeight(e.target.value)}
               />
             </div>
             <div className="col">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="weight" className="form-label">
                 Weight
               </label>
               <input
                 type="number"
                 className="form-control"
-                id="exampleInputPassword1"
+                id="weight"
                 placeholder="60Kg"
                 value={userWeight}
                 onChange={(e) => setUserWeight(e.target.value)}
@@ -198,12 +202,12 @@ const Update = () => {
           </div>
           <div className="mb-3 row">
             <div className="col">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="gender" className="form-label">
                 Gender
               </label>
               <select
                 className="form-select"
-                aria-label="Default select example"
+                id="gender"
                 value={userGender}
                 onChange={(e) => setUserGender(e.target.value)}
               >
@@ -213,12 +217,12 @@ const Update = () => {
               </select>
             </div>
             <div className="col">
-              <label htmlFor="exampleInputPassword1" className="form-label">
+              <label htmlFor="role" className="form-label">
                 Role
               </label>
               <select
                 className="form-select"
-                aria-label="Default select example"
+                id="role"
                 value={userRole}
                 onChange={(e) => setUserRole(e.target.value)}
               >
@@ -229,12 +233,12 @@ const Update = () => {
             </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="exampleInputPassword1" className="form-label">
+            <label htmlFor="course" className="form-label">
               Courses
             </label>
             <select
               className="form-select"
-              aria-label="Default select example"
+              id="course"
               value={userCourse}
               onChange={(e) => setUserCourses(e.target.value)}
             >
@@ -250,7 +254,7 @@ const Update = () => {
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
-        </form>))}
+        </form>
       </div>
       <ToastContainer />
     </>
