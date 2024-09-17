@@ -31,26 +31,54 @@ const Update = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     // Validation
-    if (userName.length <= 2) {
-      setError("Name must be at least 3 characters long");
+    if (userFName.length < 3) {
+      toastDealing("First name must be at least 3 characters long", "danger");
       return;
     }
-    if (userEmail.length <= 5) {
-      setError("Email must be valid");
+  
+    if (userLName.length < 3) {
+      toastDealing("Last name must be at least 3 characters long", "danger");
       return;
     }
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userEmail)) {
+      toastDealing("Please enter a valid email address", "danger");
+      return;
+    }
+  
+    if (userPassword.length < 6) {
+      toastDealing("Password must be at least 6 characters long", "danger");
+      return;
+    }
+  
+    if (!userHeight || userHeight <= 0) {
+      toastDealing("Please enter a valid height", "danger");
+      return;
+    }
+  
+    if (!userWeight || userWeight <= 0) {
+      toastDealing("Please enter a valid weight", "danger");
+      return;
+    }
+  
     if (userGender !== "male" && userGender !== "female") {
-      setError("Gender must be selected");
+      toastDealing("Please select a gender", "danger");
       return;
     }
-    const validCourses = ["CPISM", "DISM", "HDSE - I", "HDSE - II", "ADSE-I", "ADSE-II"];
-    if (!validCourses.includes(userCourse)) {
-      setError("Course must be selected");
+  
+    if (userRole !== "admin" && userRole !== "student") {
+      toastDealing("Please select a role", "danger");
       return;
     }
-
+  
+    if (!userCourse) {
+      toastDealing("Please select a course", "danger");
+      return;
+    }
+  
     const updatedUser = {
       fname: userFName,
       lname: userLName,
@@ -62,7 +90,7 @@ const Update = () => {
       course: userCourse,
       role: userRole,
     };
-
+  
     try {
       const response = await fetch(
         `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`,
@@ -106,7 +134,7 @@ const Update = () => {
       }
     };
     fetchUserSingle();
-  }, [userId]); // <-- Add userId as a dependency
+  }, [userId]);
 
   const fetchCourses = async () => {
     try {
