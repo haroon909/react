@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const List = () => {
   const [userList, setUserList] = useState([]);
 
+  // Fetching the user list when the component mounts
   useEffect(() => {
     const fetchUserList = async () => {
       try {
@@ -23,6 +24,29 @@ const List = () => {
     fetchUserList();
   }, []);
 
+  // Function to delete a user
+  const handleDelete = async (userId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(
+        `https://66d806e137b1cadd8053106b.mockapi.io/Users/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.ok) {
+        // Remove the user from the user list after successful deletion
+        setUserList(userList.filter((user) => user.id !== userId));
+      } else {
+        throw new Error("Failed to delete user.");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
   return (
     <div className="container mt-5">
       <table className="table">
@@ -35,12 +59,8 @@ const List = () => {
             <th scope="col">Gender</th>
             <th scope="col">Height</th>
             <th scope="col">Weight</th>
-            <th scope="col">role</th>
+            <th scope="col">Role</th>
             <th scope="col">Action</th>
-
-
- 
-
           </tr>
         </thead>
         <tbody>
@@ -54,11 +74,16 @@ const List = () => {
               <td>{user.height}</td>
               <td>{user.weight}</td>
               <td>{user.role}</td>
-
-
               <td>
-                <Link className="btn btn-primary btn-sm m-2" to={`/Update/${user.id}`} >Update</Link>
-                <button className="btn btn-danger btn-sm" >Delete</button>
+                <Link className="btn btn-primary btn-sm m-2" to={`/Update/${user.id}`}>
+                  Update
+                </Link>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDelete(user.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

@@ -31,6 +31,25 @@ const Update = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validation
+    if (userName.length <= 2) {
+      setError("Name must be at least 3 characters long");
+      return;
+    }
+    if (userEmail.length <= 5) {
+      setError("Email must be valid");
+      return;
+    }
+    if (userGender !== "male" && userGender !== "female") {
+      setError("Gender must be selected");
+      return;
+    }
+    const validCourses = ["CPISM", "DISM", "HDSE - I", "HDSE - II", "ADSE-I", "ADSE-II"];
+    if (!validCourses.includes(userCourse)) {
+      setError("Course must be selected");
+      return;
+    }
 
     const updatedUser = {
       fname: userFName,
