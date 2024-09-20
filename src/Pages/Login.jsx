@@ -15,7 +15,8 @@ const Login = () => {
         "https://66d806e137b1cadd8053106b.mockapi.io/Users"
       );
       if (response === 200) {
-        const singleUser = dataa.filter(Options=> Options.email === loginemail && Options.password === loginpassword)
+        const singleUser = dataa.filter(Options=> Options.email === loginemail && Options.password === loginpassword);
+        if(singleUser[0])
       }
 
 }
