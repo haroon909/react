@@ -3,6 +3,12 @@ import React, { useEffect, useState } from "react";
 const Login = () => {
   const [userLogin, setUserLogin] = useState([]);
 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+}
+
   useEffect(() => {
     const fetchUserLogin = async () => {
       try {
@@ -25,7 +31,7 @@ const Login = () => {
  
   return (
     <div className="container mt-5">
-      <form onSubmit={fetchUserLogin()}>
+      <form onSubmit={handleSubmit}>
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
