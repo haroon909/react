@@ -6,6 +6,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await fetch(
+        "https://66d806e137b1cadd8053106b.mockapi.io/Users"
+      );
+      if (response === 200) {
+        const singleUser = dataa.filter(Options=> Options.us)
+      }
 
 }
 
