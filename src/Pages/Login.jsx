@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-const List = () => {
+const Login = () => {
   const [userLogin, setUserLogin] = useState([]);
 
-  // Fetching the user list when the component mounts
   useEffect(() => {
-    const fetchUserList = async () => {
+    const fetchUserLogin = async () => {
       try {
         const response = await fetch(
           "https://66d806e137b1cadd8053106b.mockapi.io/Users"
@@ -21,7 +19,7 @@ const List = () => {
       }
     };
 
-    fetchUserList();
+    fetchUserLogin();
   }, []);
 
  
@@ -32,4 +30,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default Login;
